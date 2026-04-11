@@ -1,5 +1,20 @@
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.util.ArrayList;
+import java.util.List;
+
+class GoodsBogie {
+    String type;
+    String cargo;
+
+    GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
+    }
+
+    @Override
+    public String toString() {
+        return type + " -> " + cargo;
+    }
+}
 
 public class TrainManagement {
 
@@ -7,28 +22,25 @@ public class TrainManagement {
 
         System.out.println("=== Train Consist Management App ===");
 
-        String trainId = "TRN-1234";
-        String cargoCode = "PET-AB";
+        List<GoodsBogie> goodsBogies = new ArrayList<>();
 
-        String trainPattern = "TRN-\\d{4}";
-        String cargoPattern = "PET-[A-Z]{2}";
+        goodsBogies.add(new GoodsBogie("Cylindrical", "Petroleum"));
+        goodsBogies.add(new GoodsBogie("Box", "Coal"));
+        goodsBogies.add(new GoodsBogie("Open", "Grain"));
 
-        Pattern trainRegex = Pattern.compile(trainPattern);
-        Pattern cargoRegex = Pattern.compile(cargoPattern);
+        System.out.println("\nGoods Bogies:");
+        goodsBogies.forEach(System.out::println);
 
-        Matcher trainMatcher = trainRegex.matcher(trainId);
-        Matcher cargoMatcher = cargoRegex.matcher(cargoCode);
+        boolean isSafe = goodsBogies.stream()
+                .allMatch(b ->
+                        !b.type.equals("Cylindrical") || b.cargo.equals("Petroleum")
+                );
 
-        if (trainMatcher.matches()) {
-            System.out.println("Train ID is valid: " + trainId);
+        System.out.println("\nSafety Compliance Result:");
+        if (isSafe) {
+            System.out.println("Train is SAFE for transportation ✔");
         } else {
-            System.out.println("Invalid Train ID: " + trainId);
-        }
-
-        if (cargoMatcher.matches()) {
-            System.out.println("Cargo Code is valid: " + cargoCode);
-        } else {
-            System.out.println("Invalid Cargo Code: " + cargoCode);
+            System.out.println("Train is NOT SAFE ✘");
         }
     }
 }
