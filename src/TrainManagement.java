@@ -1,6 +1,8 @@
+import java.util.Arrays;
+
 public class TrainManagement {
 
-    public static boolean searchBogie(String[] bogieIds, String key) {
+    public static boolean binarySearchBogie(String[] bogieIds, String key) {
 
         try {
 
@@ -8,11 +10,31 @@ public class TrainManagement {
                 throw new IllegalArgumentException("Input cannot be null");
             }
 
-            for (String id : bogieIds) {
+            Arrays.sort(bogieIds);
 
-                if (id.equals(key)) {
+            int low = 0;
+            int high = bogieIds.length - 1;
+
+            if (bogieIds.length == 0) {
+                System.out.println("Bogie Not Found: " + key);
+                return false;
+            }
+
+            while (low <= high) {
+
+                int mid = (low + high) / 2;
+
+                int compare = key.compareTo(bogieIds[mid]);
+
+                if (compare == 0) {
                     System.out.println("Bogie Found: " + key);
                     return true;
+                }
+
+                if (compare > 0) {
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
                 }
             }
 
@@ -29,9 +51,9 @@ public class TrainManagement {
 
         System.out.println("=== Train Consist Management App ===");
 
-        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        String[] bogieIds = {"BG309", "BG101", "BG550", "BG205", "BG412"};
 
-        searchBogie(bogieIds, "BG309");
-        searchBogie(bogieIds, "BG999");
+        binarySearchBogie(bogieIds, "BG205");
+        binarySearchBogie(bogieIds, "BG999");
     }
 }
