@@ -1,66 +1,37 @@
-import java.util.Arrays;
-
 public class TrainManagement {
 
-    public static int[] sortCapacities(int[] capacities) {
-
-        if (capacities == null || capacities.length == 0) {
-            throw new IllegalArgumentException("Invalid capacity array");
-        }
-
-        for (int i = 0; i < capacities.length - 1; i++) {
-            for (int j = 0; j < capacities.length - i - 1; j++) {
-
-                if (capacities[j] > capacities[j + 1]) {
-                    int temp = capacities[j];
-                    capacities[j] = capacities[j + 1];
-                    capacities[j + 1] = temp;
-                }
-            }
-        }
-
-        return capacities;
-    }
-
-    public static String[] sortBogieNames(String[] bogies) {
+    public static boolean searchBogie(String[] bogieIds, String key) {
 
         try {
 
-            if (bogies == null) {
-                throw new IllegalArgumentException("Bogie array cannot be null");
+            if (bogieIds == null || key == null) {
+                throw new IllegalArgumentException("Input cannot be null");
             }
 
-            if (bogies.length == 0) {
-                throw new IllegalArgumentException("Bogie array cannot be empty");
+            for (String id : bogieIds) {
+
+                if (id.equals(key)) {
+                    System.out.println("Bogie Found: " + key);
+                    return true;
+                }
             }
 
-            Arrays.sort(bogies);
+            System.out.println("Bogie Not Found: " + key);
+            return false;
 
         } catch (IllegalArgumentException e) {
             System.out.println("ERROR: " + e.getMessage());
-        } finally {
-            System.out.println("Bogie sorting completed.");
+            return false;
         }
-
-        return bogies;
     }
 
     public static void main(String[] args) {
 
         System.out.println("=== Train Consist Management App ===");
 
-        String[] bogies = {
-                "Sleeper",
-                "AC Chair",
-                "First Class",
-                "General",
-                "Luxury"
-        };
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        String[] sorted = sortBogieNames(bogies);
-
-        System.out.println("Sorted Bogie Names:");
-
-        System.out.println(Arrays.toString(sorted));
+        searchBogie(bogieIds, "BG309");
+        searchBogie(bogieIds, "BG999");
     }
 }
