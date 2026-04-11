@@ -1,58 +1,57 @@
-class CargoSafetyException extends RuntimeException {
-    public CargoSafetyException(String message) {
-        super(message);
-    }
-}
+public class TrainManagement {
 
-class GoodsBogie {
-    String shape;
-    String cargo;
+    public static int[] sortCapacities(int[] capacities) {
 
-    GoodsBogie(String shape) {
-        this.shape = shape;
-    }
-
-    public void assignCargo(String cargo) {
         try {
-            System.out.println("\nAssigning cargo: " + cargo + " to " + shape + " bogie");
 
-            if (shape.equals("Rectangular") && cargo.equals("Petroleum")) {
-                throw new CargoSafetyException(
-                        "Unsafe Assignment: Petroleum cannot be assigned to Rectangular bogie"
-                );
+            if (capacities == null) {
+                throw new IllegalArgumentException("Capacity array cannot be null");
             }
 
-            this.cargo = cargo;
-            System.out.println("Cargo assigned successfully ✔");
+            if (capacities.length == 0) {
+                throw new IllegalArgumentException("Capacity array cannot be empty");
+            }
 
-        } catch (CargoSafetyException e) {
+            int n = capacities.length;
+
+            for (int i = 0; i < n - 1; i++) {
+
+                for (int j = 0; j < n - i - 1; j++) {
+
+                    if (capacities[j] < 0 || capacities[j + 1] < 0) {
+                        throw new IllegalArgumentException("Capacity cannot be negative");
+                    }
+
+                    if (capacities[j] > capacities[j + 1]) {
+
+                        int temp = capacities[j];
+                        capacities[j] = capacities[j + 1];
+                        capacities[j + 1] = temp;
+                    }
+                }
+            }
+
+        } catch (IllegalArgumentException e) {
             System.out.println("ERROR: " + e.getMessage());
         } finally {
-            System.out.println("Cargo assignment process completed for " + shape + " bogie.");
+            System.out.println("Sorting operation completed.");
         }
-    }
 
-    @Override
-    public String toString() {
-        return shape + " Bogie -> Cargo: " + (cargo == null ? "None" : cargo);
+        return capacities;
     }
-}
-
-public class TrainManagement {
 
     public static void main(String[] args) {
 
         System.out.println("=== Train Consist Management App ===");
 
-        GoodsBogie b1 = new GoodsBogie("Cylindrical");
-        GoodsBogie b2 = new GoodsBogie("Rectangular");
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        b1.assignCargo("Petroleum");
+        int[] sorted = sortCapacities(capacities);
 
-        b2.assignCargo("Petroleum");
+        System.out.println("Sorted Capacities:");
 
-        System.out.println("\nFinal Bogie States:");
-        System.out.println(b1);
-        System.out.println(b2);
+        for (int c : sorted) {
+            System.out.print(c + " ");
+        }
     }
 }
