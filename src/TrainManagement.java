@@ -1,7 +1,5 @@
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 class Bogie {
     String name;
@@ -14,7 +12,7 @@ class Bogie {
 
     @Override
     public String toString() {
-        return name + " (" + capacity + ")";
+        return name + " -> Capacity: " + capacity;
     }
 }
 
@@ -27,19 +25,15 @@ public class TrainManagement {
         List<Bogie> bogies = new ArrayList<>();
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
-        bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("First Class", 24));
-        bogies.add(new Bogie("AC Chair", 60));
 
-        System.out.println("\nAll Bogies:");
+        System.out.println("\nBogie List:");
         bogies.forEach(System.out::println);
 
-        Map<String, List<Bogie>> groupedBogies = bogies.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
+        int totalSeats = bogies.stream()
+                .map(b -> b.capacity)
+                .reduce(0, Integer::sum);
 
-        System.out.println("\nGrouped Bogies by Type:");
-        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
-            System.out.println(entry.getKey() + " -> " + entry.getValue());
-        }
+        System.out.println("\nTotal Seating Capacity of Train: " + totalSeats);
     }
 }
